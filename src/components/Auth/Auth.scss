@@ -1,0 +1,30 @@
+.auth-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+
+  .auth-page-form {
+    background-color: #fff;
+    width: 50%;
+    height: 50%;
+    border-radius: 1rem;
+
+    form {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+
+      button {
+        margin-top: 2rem;
+      }
+
+      .auth-error {
+        color: red;
+        text-align: center;
+      }
+    }
+  }
+}
