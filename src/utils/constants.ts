@@ -28,7 +28,7 @@ export const routePaths = {
   },
   hrBoards: '/hr-boards',
   diagram: '/diagram',
-  staff: '/staff',
+  main: '/main',
 }
 
 export type UserRoles = typeof userRoles
