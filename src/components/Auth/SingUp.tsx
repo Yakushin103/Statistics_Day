@@ -14,21 +14,26 @@ const SignupSchema = Yup.object().shape({
     .max(20, 'Too Long!')
     .required('Required'),
   password: Yup.string()
+    .min(2, 'Too Short!')
+    .max(20, 'Too Long!')
     .required('Required'),
+    repeatPass: Yup.string()
+    .oneOf([Yup.ref('password'), null], "Passwords don't match.")
 })
 
-const SingIn = () => {
+const SingUp = () => {
   const history = useHistory()
 
   const formik = useFormik({
     initialValues: {
       login: '',
       password: '',
+      repeatPass: '',
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
-      // alert(JSON.stringify(values, null, 2))
-      history.push('/main')
+      alert(JSON.stringify(values, null, 2))
+      // history.push('/main')
     },
   })
 
@@ -38,17 +43,16 @@ const SingIn = () => {
     <Grid
       className="auth-page-form"
       container
-      direction="column"
       justifyContent="center"
       alignItems="center"
       spacing={1}
     >
       <Grid item>
         <h1>
-          Welcome !!!
+          Registration
         </h1>
       </Grid>
-      
+
       <form onSubmit={formik.handleSubmit}>
         <Grid item>
           <TextField
@@ -76,7 +80,6 @@ const SingIn = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
-          // autoComplete="current-password"
           />
           {
             touched.password && errors.password ?
@@ -86,8 +89,25 @@ const SingIn = () => {
         </Grid>
 
         <Grid item>
-          <NavLink to={routePaths.auth.signUp}>
-            Registration
+          <TextField
+            required
+            id="repeatPass"
+            label="Repeat password"
+            type="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.repeatPass}
+          />
+          {
+            touched.repeatPass && errors.repeatPass ?
+              <div>{errors.repeatPass}</div> :
+              null
+          }
+        </Grid>
+
+        <Grid item>
+          <NavLink to={routePaths.auth.signIn}>
+            Sing in
           </NavLink>
         </Grid>
 
@@ -103,4 +123,4 @@ const SingIn = () => {
   )
 }
 
-export default SingIn
+export default SingUp
