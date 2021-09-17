@@ -17,7 +17,7 @@ const SignupSchema = Yup.object().shape({
     .min(2, 'Too Short!')
     .max(20, 'Too Long!')
     .required('Required'),
-    repeatPass: Yup.string()
+  repeatPass: Yup.string()
     .oneOf([Yup.ref('password'), null], "Passwords don't match.")
 })
 
@@ -43,6 +43,7 @@ const SingUp = () => {
     <Grid
       className="auth-page-form"
       container
+      direction="column"
       justifyContent="center"
       alignItems="center"
       spacing={1}

@@ -19,16 +19,10 @@ const Auth = () => {
 
   useEffect(() => {
     let local = location.pathname.split('/')[2]
-    if (local === undefined) {
-      setAuthLoc('sign-in')
-    } else {
-      setAuthLoc(local)
-    }
+
+    local === undefined ? setAuthLoc('sign-in') : setAuthLoc(local)
 
   }, [location])
-  // location.pathname.split('/')[2]
-
-  // const checkAuth = location.pathname.split('/')[2] === 'sing-up' ? 'forgot-password'
 
 
   console.log('location', location);
