@@ -1,5 +1,6 @@
 import React from 'react'
-import { NavLink, useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 
@@ -7,6 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { routePaths } from '../../utils/constants'
+import { signUp } from '../../store/main/thunk'
 
 const SignupSchema = Yup.object().shape({
   login: Yup.string()
@@ -22,7 +24,8 @@ const SignupSchema = Yup.object().shape({
 })
 
 const SingUp = () => {
-  const history = useHistory()
+  // const history = useHistory()
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -32,7 +35,12 @@ const SingUp = () => {
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2))
+      let data = {
+        login: values.login,
+        password: values.password
+      }
+      dispatch(signUp(data))
+      // alert(JSON.stringify(values, null, 2))
       // history.push('/main')
     },
   })
