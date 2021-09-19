@@ -1,15 +1,14 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from "yup"
 
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-
 import { routePaths } from '../../utils/constants'
-import { signIn } from '../../store/main/thunk'
+import { signUp } from '../../store/main/thunk'
 
 const SignupSchema = Yup.object().shape({
   login: Yup.string()
@@ -17,23 +16,29 @@ const SignupSchema = Yup.object().shape({
     .max(20, 'Too Long!')
     .required('Required'),
   password: Yup.string()
+    .min(2, 'Too Short!')
+    .max(20, 'Too Long!')
     .required('Required'),
+  repeatPass: Yup.string()
+    .oneOf([Yup.ref('password'), null], "Passwords don't match.")
 })
 
-const SingIn = () => {
-  const history = useHistory()
+const SignUp = () => {
   const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
       login: '',
       password: '',
+      repeatPass: '',
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
-      dispatch(signIn(values))
-
-      // history.push('/main')
+      let data = {
+        login: values.login,
+        password: values.password
+      }
+      dispatch(signUp(data))
     },
   })
 
@@ -50,7 +55,7 @@ const SingIn = () => {
     >
       <Grid item>
         <h1>
-          Welcome !!!
+          Registration
         </h1>
       </Grid>
 
@@ -81,7 +86,6 @@ const SingIn = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
-          // autoComplete="current-password"
           />
           {
             touched.password && errors.password ?
@@ -91,8 +95,25 @@ const SingIn = () => {
         </Grid>
 
         <Grid item>
-          <NavLink to={routePaths.auth.signUp}>
-            Registration
+          <TextField
+            required
+            id="repeatPass"
+            label="Repeat password"
+            type="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.repeatPass}
+          />
+          {
+            touched.repeatPass && errors.repeatPass ?
+              <div>{errors.repeatPass}</div> :
+              null
+          }
+        </Grid>
+
+        <Grid item>
+          <NavLink to={routePaths.auth.signIn}>
+            Sign in
           </NavLink>
         </Grid>
 
@@ -108,4 +129,4 @@ const SingIn = () => {
   )
 }
 
-export default SingIn
+export default SignUp

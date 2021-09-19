@@ -1,45 +1,68 @@
-import React, { useState, useEffect } from 'react'
-import { NavLink, useLocation, useHistory } from 'react-router-dom'
-import { useFormik, FormikProps } from 'formik'
-import * as Yup from "yup"
+import React, { lazy,useMemo, memo } from 'react'
+import { useLocation, withRouter } from 'react-router-dom'
 
-import Grid from '@material-ui/core/Grid'
-import SingIn from './SingIn'
-import SingUp from './SingUp'
-import ForgotPassword from './ForgotPassword'
+import lazyWrapper from '../../utils/HOK/lazyWrapper'
+
+import { routePaths } from '../../utils/constants'
 
 import './Auth.scss'
 
-
+const SignIn = lazyWrapper(lazy(() => import('./SignIn')))
+const SignUp = lazyWrapper(lazy(() => import('./SignUp')))
+const ForgotPassword = lazyWrapper(lazy(() => import('./ForgotPassword')))
 
 const Auth = () => {
-  const [authLoc, setAuthLoc] = useState('sign-in')
-  const history = useHistory()
   const location = useLocation()
 
-  useEffect(() => {
-    let local = location.pathname.split('/')[2]
-    local === undefined ? setAuthLoc('sign-in') : setAuthLoc(local)
-  }, [location])
+  const openedForm = useMemo(() => formes.find((form) => {
+    let isOpen = location?.pathname === form.path;
+    if (form.path === '/') {
+      isOpen = !notSignInRoutes.includes(location?.pathname || '/');
+    }
+    return isOpen;
+  }), [location]);
 
   return (
     <div className="auth-page">
-      {
-        authLoc === 'sign-in' &&
-        <SingIn />
-      }
-
-      {
-        authLoc === 'sign-up' &&
-        <SingUp />
-      }
-
-      {
-        authLoc === 'forgot-password' &&
-        <ForgotPassword />
-      }
+      {formes.map((form, index) => {
+        if (form.path === openedForm?.path) {
+          const Component = form.component
+          return (
+            <Component key={index} />
+          )
+        }
+      })}
     </div>
   )
 }
 
-export default Auth
+const notSignInRoutes = [
+  routePaths.auth.signIn,
+  routePaths.auth.signUp,
+  routePaths.auth.forgotPassword,
+  routePaths.auth.resetPassword,
+];
+const formes = [
+  {
+    path: routePaths.auth.signUp,
+    component: SignUp,
+    exact: true,
+  }, {
+    path: routePaths.auth.signIn || '/',
+    component: SignIn,
+    exact: false,
+  }, {
+    path: routePaths.auth.forgotPassword,
+    component: ForgotPassword,
+    exact: true,
+    pageTitle: 'Восстановление пароля',
+  },
+  //  {
+  //   path: routePaths.auth.resetPassword,
+  //   component: ResetPassword,
+  //   exact: true,
+  //   pageTitle: 'Смена пароля',
+  // },
+];
+
+export default withRouter(memo(Auth))
