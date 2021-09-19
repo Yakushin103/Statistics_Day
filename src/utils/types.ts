@@ -4,7 +4,7 @@ export type User = {
   login: string,
 }
 
-export type SingIn = {
+export type SignIn = {
   login: string,
   password: string,
 }

@@ -19,14 +19,8 @@ const Auth = () => {
 
   useEffect(() => {
     let local = location.pathname.split('/')[2]
-
     local === undefined ? setAuthLoc('sign-in') : setAuthLoc(local)
-
   }, [location])
-
-
-  console.log('location', location);
-
 
   return (
     <div className="auth-page">

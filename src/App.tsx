@@ -13,26 +13,19 @@ import { authorize } from './store/main/thunk'
 // import { getAllTechnologies, getUsersList } from 'store/enums/thunks';
 
 const App = () => {
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false)
 
-  const user = useSelector(({ main }: RootState) => main.user);
-  const dispatch = useDispatch();
+  const user = useSelector(({ main }: RootState) => main.user)
+  const dispatch = useDispatch()
   
 
   useEffect(() => {
     (async () => {
-      await dispatch(authorize());
+      await dispatch(authorize())
 
-      setIsAuthorized(true);
-    })();
-  }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     dispatch(getAllTechnologies());
-  //     dispatch(getUsersList());
-  //   }
-  // }, [user, dispatch]);
+      setIsAuthorized(true)
+    })()
+  }, [dispatch])
 
   if (!isAuthorized) { return <Loader show />; }
 
