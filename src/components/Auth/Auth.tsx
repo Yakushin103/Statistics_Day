@@ -1,4 +1,4 @@
-import React, { lazy,useMemo, memo } from 'react'
+import React, { lazy, useMemo, memo } from 'react'
 import { useLocation, withRouter } from 'react-router-dom'
 
 import lazyWrapper from '../../utils/HOK/lazyWrapper'
@@ -15,12 +15,13 @@ const Auth = () => {
   const location = useLocation()
 
   const openedForm = useMemo(() => formes.find((form) => {
-    let isOpen = location?.pathname === form.path;
-    if (form.path === '/') {
-      isOpen = !notSignInRoutes.includes(location?.pathname || '/');
+    let isOpen = location?.pathname === form.path
+
+    if (!isOpen) {
+      isOpen = !notSignInRoutes.includes(location?.pathname || '/')
     }
-    return isOpen;
-  }), [location]);
+    return isOpen
+  }), [location])
 
   return (
     <div className="auth-page">
@@ -44,18 +45,17 @@ const notSignInRoutes = [
 ];
 const formes = [
   {
-    path: routePaths.auth.signUp,
-    component: SignUp,
-    exact: true,
-  }, {
     path: routePaths.auth.signIn || '/',
     component: SignIn,
     exact: false,
   }, {
+    path: routePaths.auth.signUp,
+    component: SignUp,
+    exact: true,
+  }, {
     path: routePaths.auth.forgotPassword,
     component: ForgotPassword,
     exact: true,
-    pageTitle: 'Восстановление пароля',
   },
   //  {
   //   path: routePaths.auth.resetPassword,
