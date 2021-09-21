@@ -11,9 +11,9 @@ import { routePaths } from '../../utils/constants'
 import { signUp } from '../../store/main/thunk'
 
 const SignupSchema = Yup.object().shape({
-  login: Yup.string()
+  email: Yup.string()
     .min(2, 'Too Short!')
-    .max(20, 'Too Long!')
+    .max(50, 'Too Long!')
     .required('Required'),
   password: Yup.string()
     .min(2, 'Too Short!')
@@ -28,14 +28,14 @@ const SignUp = () => {
 
   const formik = useFormik({
     initialValues: {
-      login: '',
+      email: '',
       password: '',
       repeatPass: '',
     },
     validationSchema: SignupSchema,
     onSubmit: values => {
       let data = {
-        login: values.login,
+        email: values.email,
         password: values.password
       }
       dispatch(signUp(data))
@@ -63,16 +63,16 @@ const SignUp = () => {
         <Grid item>
           <TextField
             required
-            id="login"
-            label="Login"
+            id="email"
+            label="Email"
             type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.login}
+            value={formik.values.email}
           />
           {
-            touched.login && errors.login ?
-              <div className="auth-error">{formik.errors.login}</div> :
+            touched.email && errors.email ?
+              <div className="auth-error">{formik.errors.email}</div> :
               null
           }
         </Grid>

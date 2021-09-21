@@ -2,18 +2,27 @@ import { instance } from './axios'
 import { token } from '../utils/token'
 import { SignIn } from '../utils/types'
 
-import { user } from '../data/mock.json'
+// const tokenResponseHandler = ({ access, refresh, user }: any) => {
+//   console.log('token', access, refresh, user);
+  
+//   token.access.set(access);
+//   token.refresh.set(refresh);
 
-export const signIn = (data: SignIn) => {
-  // return instance.post(`/sign-in`, data).then(tokenResponseHandler);
-  // return user
-  return null
+  // setToken(access);
+
+//   return user;
+// };
+// auth/login
+export const signIn = async (data: SignIn) => {
+  const user = await instance.post(`/auth/login`, data).then(res => res.data)
+  return user
 }
 
+// auth/register
 export const signUp = (data: SignIn) => {
-  // return instance.post(`/sign-in`, data).then(tokenResponseHandler);
+  const user = instance.post(`/auth/register`, data)
+  console.log('user', data);
   // return user
-  return null
 }
 
 export const check = () => {
@@ -22,14 +31,7 @@ export const check = () => {
   // return instance.get(`/me`)
 }
 
-// const tokenResponseHandler = ({ access, refresh, user }) => {
-//   token.access.set(access);
-//   token.refresh.set(refresh);
 
-//   setToken(access);
-
-//   return user;
-// };
 
 // /**
 //  * @param {{
