@@ -1,6 +1,5 @@
 import React, { memo, lazy } from 'react'
 import { useSelector } from 'react-redux'
-
 import { Switch, Route } from 'react-router-dom'
 
 import { RootState } from '../store/store'
@@ -13,8 +12,11 @@ import titleSetter from '../utils/HOK/titleSetter'
 const Page404 = lazyWrapper(lazy(() => import('../components/Page404/Page404')))
 const Auth = lazyWrapper(lazy(() => import('../components/Auth/Auth')))
 
+
 const Router = () => {
-  const user = useSelector(({ main }: RootState) => main.user);
+  const user = useSelector(({ main }: RootState) => main.user)
+  console.log('user', user);
+
 
   if (!user) {
     return <Auth />;

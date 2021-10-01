@@ -4,31 +4,41 @@ import { SignIn } from '../utils/types'
 
 // const tokenResponseHandler = ({ access, refresh, user }: any) => {
 //   console.log('token', access, refresh, user);
-  
+
 //   token.access.set(access);
 //   token.refresh.set(refresh);
 
-  // setToken(access);
+// setToken(access);
 
 //   return user;
 // };
 // auth/login
 export const signIn = async (data: SignIn) => {
-  const user = await instance.post(`/auth/login`, data).then(res => res.data)
+  const { token, userId } = await instance.post(`/auth/login`, data).then(res => res.data)
+  localStorage.setItem('token', token)
+  let user = {
+    id: userId
+  }
   return user
 }
 
 // auth/register
-export const signUp = (data: SignIn) => {
-  const user = instance.post(`/auth/register`, data)
-  console.log('user', data);
-  // return user
+export const signUp = async (data: SignIn) => {
+  const user = await instance.post(`/auth/register`, data)
+
+  return user
 }
 
-export const check = () => {
-  if (!token.access.get()) { return; }
+type Token = string | null | undefined
 
-  // return instance.get(`/me`)
+export const check = async () => {
+  let token: any = localStorage.getItem('token')
+  if (!token) { return; }
+
+  const user = await instance.get(`/auth/me?token=${token}`)
+    .then(res => res.data.user)
+
+  return user
 }
 
 
