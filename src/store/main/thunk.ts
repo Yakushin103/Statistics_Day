@@ -9,7 +9,7 @@ export const authorize = createAsyncThunk(
   async (arg, { dispatch }) => {
     try {
       const user = await authApi.check()
-
+      
       dispatch(updateUser(user))
 
     } catch (err) {

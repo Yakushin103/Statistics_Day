@@ -2,34 +2,46 @@ import { instance } from './axios'
 import { token } from '../utils/token'
 import { SignIn } from '../utils/types'
 
-import { user } from '../data/mock.json'
+// const tokenResponseHandler = ({ access, refresh, user }: any) => {
+//   console.log('token', access, refresh, user);
 
-export const signIn = (data: SignIn) => {
-  // return instance.post(`/sign-in`, data).then(tokenResponseHandler);
-  // return user
-  return null
-}
-
-export const signUp = (data: SignIn) => {
-  // return instance.post(`/sign-in`, data).then(tokenResponseHandler);
-  // return user
-  return null
-}
-
-export const check = () => {
-  if (!token.access.get()) { return; }
-
-  // return instance.get(`/me`)
-}
-
-// const tokenResponseHandler = ({ access, refresh, user }) => {
 //   token.access.set(access);
 //   token.refresh.set(refresh);
 
-//   setToken(access);
+// setToken(access);
 
 //   return user;
 // };
+// auth/login
+export const signIn = async (data: SignIn) => {
+  const { token, userId } = await instance.post(`/auth/login`, data).then(res => res.data)
+  localStorage.setItem('token', token)
+  let user = {
+    id: userId
+  }
+  return user
+}
+
+// auth/register
+export const signUp = async (data: SignIn) => {
+  const user = await instance.post(`/auth/register`, data)
+
+  return user
+}
+
+type Token = string | null | undefined
+
+export const check = async () => {
+  let token: any = localStorage.getItem('token')
+  if (!token) { return; }
+
+  const user = await instance.get(`/auth/me?token=${token}`)
+    .then(res => res.data.user)
+
+  return user
+}
+
+
 
 // /**
 //  * @param {{

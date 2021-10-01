@@ -2,9 +2,10 @@ export type User = {
   id: number,
   name: string,
   login: string,
+  email: string,
 }
 
 export type SignIn = {
-  login: string,
+  email: string,
   password: string,
 }
