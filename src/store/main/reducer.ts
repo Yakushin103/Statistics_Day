@@ -37,12 +37,17 @@ const mainSlice = createSlice({
       ...store,
       pageTitle: payload,
     }),
+    updateSidebar: (store, { payload }) => ({
+      ...store,
+      isSidebarOpen: payload,
+    })
   },
 })
 
 export const {
   updateUser,
-  updatePageTitle
+  updatePageTitle,
+  updateSidebar
 } = mainSlice.actions
 
 export default mainSlice.reducer
